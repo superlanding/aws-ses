@@ -47,7 +47,7 @@ jobs:
         bundle install --jobs 4 --retry 3
 
     - name: Test gem loading
-      run: ruby -I lib -e "require 'aws/ses'; puts 'Successfully loaded aws-ses gem with Ruby ' + RUBY_VERSION"
+      run: bundle exec ruby -I lib -e "require 'aws/ses'; puts 'Successfully loaded aws-ses gem with Ruby ' + RUBY_VERSION"
 
     - name: Run tests
       run: bundle exec rake test
