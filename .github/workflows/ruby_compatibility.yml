@@ -26,14 +26,25 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true
-        cache-version: ${{ matrix.ruby-version }}
 
     - name: Display Ruby version
       run: ruby -v
 
+    - name: Display Gemfile being used
+      run: echo "Using Gemfile at $BUNDLE_GEMFILE"
+
+    - name: Cache gems
+      uses: actions/cache@v3
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ matrix.ruby-version }}-${{ hashFiles('gemfiles/*.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-${{ matrix.ruby-version }}-
+
     - name: Install dependencies
-      run: bundle install
+      run: |
+        bundle config set --local path vendor/bundle
+        bundle install --jobs 4 --retry 3
 
     - name: Test gem loading
       run: ruby -I lib -e "require 'aws/ses'; puts 'Successfully loaded aws-ses gem with Ruby ' + RUBY_VERSION"
