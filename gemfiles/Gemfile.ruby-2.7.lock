@@ -3,7 +3,6 @@ GEM
   specs:
     addressable (2.4.0)
     base64 (0.3.0)
-    bigdecimal (3.3.1)
     builder (3.3.0)
     cgi (0.5.1)
     date (3.5.1)
@@ -13,7 +12,7 @@ GEM
       cgi (>= 0.3.3)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
-    flexmock (3.0.2)
+    flexmock (2.4.5)
     git (1.11.0)
       rchardet (~> 1.8)
     github_api (0.16.0)
@@ -25,9 +24,7 @@ GEM
       oauth2 (~> 1.0)
     hashie (5.1.0)
       logger
-    highline (3.1.2)
-      reline
-    io-console (0.8.2)
+    highline (2.1.0)
     jeweler (2.3.9)
       builder
       bundler
@@ -50,11 +47,10 @@ GEM
       net-smtp
     mime-types (2.99.3)
     mini_mime (1.1.5)
-    multi_json (1.19.1)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
+    multi_json (1.15.0)
+    multi_xml (0.6.0)
     multipart-post (2.4.1)
-    net-imap (0.5.13)
+    net-imap (0.4.23)
       date
       net-protocol
     net-pop (0.1.2)
@@ -78,13 +74,11 @@ GEM
     racc (1.8.1)
     rack (2.2.21)
     rake (13.3.1)
-    rchardet (1.10.0)
+    rchardet (1.8.0)
     rdoc (7.0.3)
       erb
       psych (>= 4.0.0)
       tsort
-    reline (0.6.3)
-      io-console (~> 0.5)
     rexml (3.4.4)
     semver2 (3.4.2)
     shoulda-context (2.0.0)
@@ -104,9 +98,9 @@ PLATFORMS
 DEPENDENCIES
   builder
   bundler (>= 1.17)
-  flexmock (>= 2.4)
+  flexmock (>= 2.4, < 3.0)
   jeweler
-  mail (>= 2.8.0)
+  mail (>= 2.8.0, < 3.0)
   mime-types
   nokogiri (~> 1.15.0)
   rake
@@ -116,4 +110,4 @@ DEPENDENCIES
   xml-simple
 
 BUNDLED WITH
-   2.3.27
+   2.3.14

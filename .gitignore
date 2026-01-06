@@ -11,6 +11,11 @@ doc
 # bundler
 .bundle
 
+# Ignore root Gemfile.lock (we use version-specific ones in gemfiles/)
+/Gemfile.lock
+# But keep version-specific lock files
+!/gemfiles/*.lock
+
 # jeweler generated
 pkg
 

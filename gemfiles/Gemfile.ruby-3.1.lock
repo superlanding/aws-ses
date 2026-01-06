@@ -63,7 +63,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nokogiri (1.15.7-arm64-darwin)
+    nokogiri (1.18.10-arm64-darwin)
       racc (~> 1.4)
     oauth2 (1.4.8)
       faraday (>= 0.8, < 3.0)
@@ -104,11 +104,14 @@ PLATFORMS
 DEPENDENCIES
   builder
   bundler (>= 1.17)
-  flexmock (>= 2.4)
+  flexmock (>= 3.0)
   jeweler
   mail (>= 2.8.0)
   mime-types
-  nokogiri (~> 1.15.0)
+  net-imap
+  net-pop
+  net-smtp
+  nokogiri (>= 1.15.0)
   rake
   shoulda-context
   test-unit

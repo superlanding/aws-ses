@@ -9,6 +9,7 @@ group :development do
   gem "bundler", ">= 1.17"
   gem 'flexmock', '>= 2.4'
   gem "jeweler"
+  gem "nokogiri", "~> 1.15.0"  # Constrain to version supporting Ruby 2.7+
   gem "rake"
   gem "shoulda-context", ">= 0"
   gem 'test-unit'

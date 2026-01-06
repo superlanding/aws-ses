@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Test script for multiple Ruby versions
+# Full test script for multiple Ruby versions (includes development dependencies)
+# Note: This requires nokogiri to compile, which may fail on ARM Macs with old Ruby versions
 set -e
 
 RUBY_VERSIONS=("2.7.6" "3.0.7" "3.1.7")
@@ -8,7 +9,8 @@ FAILED_VERSIONS=()
 PASSED_VERSIONS=()
 
 echo "======================================"
-echo "Testing aws-ses across Ruby versions"
+echo "Full Testing aws-ses across Ruby versions"
+echo "(Including test suite)"
 echo "======================================"
 echo ""
 
@@ -45,9 +47,9 @@ for version in "${RUBY_VERSIONS[@]}"; do
 
   echo "Using Gemfile: $GEMFILE"
 
-  # Install dependencies using version-specific Gemfile
-  echo "Installing dependencies..."
-  if BUNDLE_GEMFILE="$GEMFILE" bundle install --quiet; then
+  # Install ALL dependencies including development
+  echo "Installing all dependencies (including development)..."
+  if BUNDLE_GEMFILE="$GEMFILE" bundle install 2>&1 | tail -5; then
     echo "✅ Dependencies installed successfully"
   else
     echo "❌ Failed to install dependencies"
@@ -67,21 +69,16 @@ for version in "${RUBY_VERSIONS[@]}"; do
     continue
   fi
 
-  # Check if we can run tests (development dependencies needed)
-  if BUNDLE_GEMFILE="$GEMFILE" bundle show rake >/dev/null 2>&1; then
-    echo "Running test suite..."
-    if BUNDLE_GEMFILE="$GEMFILE" bundle exec rake test 2>&1 | tail -20; then
-      echo "✅ Tests passed"
-      PASSED_VERSIONS+=("$version")
-    else
-      echo "⚠️  Some tests failed (this might be OK if tests need AWS credentials)"
-      # Still count as passed for gem loading purposes
-      PASSED_VERSIONS+=("$version (with test warnings)")
-    fi
-  else
-    echo "⚠️  Skipping test suite (development dependencies not installed)"
-    echo "✅ Basic compatibility verified (gem loads successfully)"
+  # Run full test suite
+  echo "Running full test suite..."
+  if BUNDLE_GEMFILE="$GEMFILE" bundle exec rake test 2>&1; then
+    echo "✅ All tests passed"
     PASSED_VERSIONS+=("$version")
+  else
+    echo "❌ Tests failed"
+    FAILED_VERSIONS+=("$version (tests failed)")
+    echo ""
+    continue
   fi
 
   echo ""
@@ -114,6 +111,6 @@ if [ ${#FAILED_VERSIONS[@]} -gt 0 ]; then
   echo ""
   exit 1
 else
-  echo "🎉 All Ruby versions passed!"
+  echo "🎉 All Ruby versions passed with full test suite!"
   exit 0
 fi

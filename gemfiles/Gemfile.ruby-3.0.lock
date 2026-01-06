@@ -3,7 +3,6 @@ GEM
   specs:
     addressable (2.4.0)
     base64 (0.3.0)
-    bigdecimal (3.3.1)
     builder (3.3.0)
     cgi (0.5.1)
     date (3.5.1)
@@ -51,10 +50,9 @@ GEM
     mime-types (2.99.3)
     mini_mime (1.1.5)
     multi_json (1.19.1)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
+    multi_xml (0.6.0)
     multipart-post (2.4.1)
-    net-imap (0.5.13)
+    net-imap (0.4.23)
       date
       net-protocol
     net-pop (0.1.2)
@@ -63,7 +61,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nokogiri (1.15.7-arm64-darwin)
+    nokogiri (1.17.2-arm64-darwin)
       racc (~> 1.4)
     oauth2 (1.4.8)
       faraday (>= 0.8, < 3.0)
@@ -104,11 +102,11 @@ PLATFORMS
 DEPENDENCIES
   builder
   bundler (>= 1.17)
-  flexmock (>= 2.4)
+  flexmock (>= 3.0)
   jeweler
   mail (>= 2.8.0)
   mime-types
-  nokogiri (~> 1.15.0)
+  nokogiri (>= 1.15.0)
   rake
   shoulda-context
   test-unit
@@ -116,4 +114,4 @@ DEPENDENCIES
   xml-simple
 
 BUNDLED WITH
-   2.3.27
+   2.2.33

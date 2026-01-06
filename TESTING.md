@@ -2,11 +2,34 @@
 
 本项目支持 Ruby 2.7, 3.0, 3.1, 3.2 和 3.3。
 
+## 📁 多版本 Gemfile 结构
+
+本项目使用独立的 Gemfile 管理不同 Ruby 版本的依赖：
+
+```
+gemfiles/
+├── Gemfile.ruby-2.7       # Ruby 2.7.x 专用
+├── Gemfile.ruby-2.7.lock
+├── Gemfile.ruby-3.0       # Ruby 3.0.x 专用
+├── Gemfile.ruby-3.0.lock
+├── Gemfile.ruby-3.1       # Ruby 3.1.x 专用
+├── Gemfile.ruby-3.1.lock
+└── README.md              # 详细说明
+```
+
+**为什么需要多个 Gemfile？**
+- flexmock: Ruby 2.7 使用 2.x，Ruby 3.0+ 使用 3.x
+- nokogiri: 不同版本有不同的兼容性要求
+- net-* gems: Ruby 3.1+ 需要显式声明
+- 避免单一 Gemfile.lock 的版本冲突
+
+详细说明请查看 `gemfiles/README.md`。
+
 ## 本地测试
 
-### 方法一：使用自动化脚本（推荐）
+### 方法一：快速兼容性测试（推荐）
 
-运行以下命令测试所有 Ruby 版本：
+运行以下命令快速测试所有 Ruby 版本的基本兼容性：
 
 ```bash
 ./test_multi_ruby.sh
@@ -14,31 +37,58 @@
 
 此脚本会：
 - 自动切换 Ruby 版本
-- 安装依赖
-- 测试 gem 加载
-- 运行测试套件
+- **自动选择对应的版本特定 Gemfile**
+- 安装所有依赖（包括开发依赖）
+- 测试 gem 加载是否成功
+- 运行完整测试套件
 - 显示详细的测试结果
 
-### 方法二：手动测试单个版本
+**优点**：
+- ✅ 每个版本使用最优化的依赖
+- ✅ 无版本冲突
+- ✅ 可重现的构建
+
+### 方法二：完整测试套件
+
+运行完整的测试套件（包含单元测试）：
+
+```bash
+./test_multi_ruby_full.sh
+```
+
+此脚本会：
+- 安装所有依赖（包括开发依赖）
+- 运行完整的测试套件
+- 验证所有功能
+
+**注意**：在 ARM Mac 上，旧版本 Ruby (2.7.6) 可能无法编译 nokogiri（jeweler 的依赖）。如果遇到编译问题，使用方法一即可。
+
+### 方法三：手动测试单个版本
+
+使用版本特定的 Gemfile：
 
 ```bash
 # 1. 切换到目标 Ruby 版本
 rbenv local 3.1.7
 
-# 2. 清理旧的依赖
-rm -f Gemfile.lock
+# 2. 使用对应的 Gemfile 安装依赖
+BUNDLE_GEMFILE=gemfiles/Gemfile.ruby-3.1 bundle install
 
-# 3. 安装依赖
-bundle install
-
-# 4. 测试 gem 加载
+# 3. 测试 gem 加载
 ruby -I lib -e "require 'aws/ses'; puts 'Success with Ruby ' + RUBY_VERSION"
 
-# 5. 运行测试
-bundle exec rake test
+# 4. 运行测试
+BUNDLE_GEMFILE=gemfiles/Gemfile.ruby-3.1 bundle exec rake test
 
-# 6. 恢复默认 Ruby 版本
+# 5. 恢复默认 Ruby 版本
 rbenv local --unset
+```
+
+**提示**：可以设置环境变量避免重复输入：
+```bash
+export BUNDLE_GEMFILE=gemfiles/Gemfile.ruby-3.1
+bundle install
+bundle exec rake test
 ```
 
 ### 安装所需的 Ruby 版本

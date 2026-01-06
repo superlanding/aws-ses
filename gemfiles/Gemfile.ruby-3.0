@@ -1,0 +1,19 @@
+source "http://rubygems.org"
+
+# Ruby 3.0 specific Gemfile
+
+group :development do
+  gem "bundler", ">= 1.17"
+  gem 'flexmock', '>= 3.0'  # Use 3.x for Ruby 3.0+
+  gem "jeweler"
+  gem "nokogiri", ">= 1.15.0"  # Latest nokogiri for Ruby 3.0
+  gem "rake"
+  gem "shoulda-context", ">= 0"
+  gem 'test-unit'
+  gem 'timecop'
+end
+
+gem 'builder'
+gem 'mail', '>= 2.8.0'
+gem 'mime-types'
+gem 'xml-simple'
