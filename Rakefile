@@ -31,7 +31,7 @@ require 'rdoc/task'
 require File.dirname(__FILE__) + '/lib/aws/ses'
 
 namespace :doc do
-  Rake::RDocTask.new do |rdoc|  
+  RDoc::Task.new do |rdoc|  
     rdoc.rdoc_dir = 'doc'  
     version = File.exist?('VERSION') ? File.read('VERSION') : ""
     rdoc.title    = "AWS::SES -- Support for Amazon SES's REST api #{version}"  
@@ -78,6 +78,20 @@ Jeweler::Tasks.new do |gem|
   gem.description = "Client library for Amazon's Simple Email Service's REST API"
   gem.email = "drew.blas@gmail.com"
   gem.authors = ["Drew Blas", "Marcel Molina Jr."]
-  # dependencies defined in Gemfile
+  gem.required_ruby_version = '>= 2.7.0', '< 4.0'
+
+  # Runtime dependencies
+  gem.add_runtime_dependency 'builder'
+  gem.add_runtime_dependency 'mail', '>= 2.8.0'
+  gem.add_runtime_dependency 'mime-types'
+  gem.add_runtime_dependency 'xml-simple'
+
+  # Development dependencies
+  gem.add_development_dependency 'bundler', '>= 1.17'
+  gem.add_development_dependency 'flexmock', '>= 2.4'
+  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'shoulda-context'
+  gem.add_development_dependency 'test-unit'
+  gem.add_development_dependency 'timecop'
 end
 Jeweler::RubygemsDotOrgTasks.new

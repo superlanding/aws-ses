@@ -7,7 +7,7 @@ source "http://rubygems.org"
 # Include everything needed to run rake, tests, features, etc.
 group :development do
   gem "bundler", ">= 1.17"
-  gem 'flexmock', '~> 0.8.11'
+  gem 'flexmock', '>= 2.4'
   gem "jeweler"
   gem "rake"
   gem "shoulda-context", ">= 0"
@@ -16,6 +16,6 @@ group :development do
 end
 
 gem 'builder'
-gem 'mail', '> 2.2.5'
+gem 'mail', '>= 2.8.0'
 gem 'mime-types'
 gem 'xml-simple'

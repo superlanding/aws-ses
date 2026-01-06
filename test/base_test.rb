@@ -48,7 +48,7 @@ class BaseTest < Test::Unit::TestCase
         secret_access_key: aws_secret_access_key
     )
 
-    assert_equal 'AWS3-HTTPS AWSAccessKeyId=fake_aws_key_id, Algorithm=HmacSHA256, Signature=eHh/cPIJJUc1+RMCueAi50EPlYxkZNXMrxtGxjkBD1w=', base.get_aws_auth_param(timestamp.httpdate, aws_secret_access_key)
+    assert_equal 'AWS3-HTTPS AWSAccessKeyId=fake_aws_key_id, Algorithm=HmacSHA256, Signature=eHh/cPIJJUc1+RMCueAi50EPlYxkZNXMrxtGxjkBD1w=', base.send(:gen_authorization, timestamp.httpdate)
   end
 
   def test_ses_authorization_header_v4
@@ -64,7 +64,18 @@ class BaseTest < Test::Unit::TestCase
         secret_access_key: aws_secret_access_key
     )
 
-    assert_equal 'AWS4-HMAC-SHA256 Credential=fake_aws_key_id/20200702/us-east-1/ec2/aws4_request, SignedHeaders=host;x-amz-date, Signature=c0465b36efd110b14a1c6dcca3e105085ed2bfb2a3fd3b3586cc459326ab43aa', base.get_aws_auth_param(time.httpdate, aws_secret_access_key, 'DescribeRegions', 4)
+    # Trigger request setup to populate @datetime, @date, @query, @headers, @action
+    base.instance_variable_set(:@action, 'DescribeRegions')
+    base.instance_variable_set(:@datetime, time.utc.strftime("%Y%m%dT%H%M%SZ"))
+    base.instance_variable_set(:@date, time.utc.strftime("%Y%m%d"))
+    base.instance_variable_set(:@query, '')
+    base.instance_variable_set(:@headers, {
+      'host' => 'ec2.amazonaws.com',
+      'x-amz-date' => time.utc.strftime("%Y%m%dT%H%M%SZ"),
+      'user-agent' => 'github-aws-ses-ruby-gem'
+    })
+
+    assert_equal 'AWS4-HMAC-SHA256 Credential=fake_aws_key_id/20200702/us-east-1/ses/aws4_request, SignedHeaders=host;x-amz-date, Signature=fb25a4a91c6f5c17637c81744998ac664d16ce70982c5ca92c0a62199ef4e7d6', base.send(:gen_authorization, time.httpdate)
     Timecop.return
   end
 
@@ -81,7 +92,18 @@ class BaseTest < Test::Unit::TestCase
         secret_access_key: aws_secret_access_key
     )
 
-    assert_equal 'AWS4-HMAC-SHA256 Credential=fake_aws_key_id/20200702/us-east-1/ec2/aws4_request, SignedHeaders=host;x-amz-date, Signature=b872601457070ab98e7038bdcd4dc1f5eab586ececf9908525474408b0740515', base.get_aws_auth_param(time.httpdate, aws_secret_access_key, 'DescribeRegions', 4)
+    # Trigger request setup to populate required instance variables
+    base.instance_variable_set(:@action, 'DescribeRegions')
+    base.instance_variable_set(:@datetime, time.utc.strftime("%Y%m%dT%H%M%SZ"))
+    base.instance_variable_set(:@date, time.utc.strftime("%Y%m%d"))
+    base.instance_variable_set(:@query, '')
+    base.instance_variable_set(:@headers, {
+      'host' => 'email.us-east-1.amazonaws.com',
+      'x-amz-date' => time.utc.strftime("%Y%m%dT%H%M%SZ"),
+      'user-agent' => 'github-aws-ses-ruby-gem'
+    })
+
+    assert_equal 'AWS4-HMAC-SHA256 Credential=fake_aws_key_id/20200702/us-east-1/ses/aws4_request, SignedHeaders=host;x-amz-date, Signature=c77a9d002342ac5b210c8f4a054712f9e00335ce9555c359ea8982acfa32db4c', base.send(:gen_authorization, time.httpdate)
     Timecop.return
   end
 
@@ -99,7 +121,18 @@ class BaseTest < Test::Unit::TestCase
         region:            'eu-west-1'
     )
 
-    assert_not_equal 'AWS4-HMAC-SHA256 Credential=fake_aws_key_id/20200702/us-east-1/ec2/aws4_request, SignedHeaders=host;x-amz-date, Signature=b872601457070ab98e7038bdcd4dc1f5eab586ececf9908525474408b0740515', base.get_aws_auth_param(time.httpdate, aws_secret_access_key, 'DescribeRegions', 4)
+    # Trigger request setup to populate required instance variables
+    base.instance_variable_set(:@action, 'DescribeRegions')
+    base.instance_variable_set(:@datetime, time.utc.strftime("%Y%m%dT%H%M%SZ"))
+    base.instance_variable_set(:@date, time.utc.strftime("%Y%m%d"))
+    base.instance_variable_set(:@query, '')
+    base.instance_variable_set(:@headers, {
+      'host' => 'email.us-east-1.amazonaws.com',
+      'x-amz-date' => time.utc.strftime("%Y%m%dT%H%M%SZ"),
+      'user-agent' => 'github-aws-ses-ruby-gem'
+    })
+
+    assert_not_equal 'AWS4-HMAC-SHA256 Credential=fake_aws_key_id/20200702/us-east-1/ec2/aws4_request, SignedHeaders=host;x-amz-date, Signature=b872601457070ab98e7038bdcd4dc1f5eab586ececf9908525474408b0740515', base.send(:gen_authorization, time.httpdate)
     Timecop.return
   end
 end

@@ -1,7 +1,7 @@
-%w[ base64 cgi openssl digest/sha1 net/https net/http rexml/document time ostruct mail].each { |f| require f }
+%w[ base64 cgi openssl digest/sha1 net/https net/http rexml/document time ostruct mail tempfile].each { |f| require f }
 
 begin
-  require 'URI' unless defined? URI
+  require 'uri' unless defined? URI
 rescue Exception => e
   # nothing
 end

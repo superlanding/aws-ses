@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.version = "0.7.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
+  s.required_ruby_version = Gem::Requirement.new([">= 2.7.0".freeze, "< 4.0".freeze])
   s.require_paths = ["lib".freeze]
   s.authors = ["Drew Blas".freeze, "Marcel Molina Jr.".freeze]
   s.date = "2020-09-30"
@@ -62,11 +63,11 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<builder>.freeze, [">= 0"])
-      s.add_runtime_dependency(%q<mail>.freeze, ["> 2.2.5"])
+      s.add_runtime_dependency(%q<mail>.freeze, [">= 2.8.0"])
       s.add_runtime_dependency(%q<mime-types>.freeze, [">= 0"])
       s.add_runtime_dependency(%q<xml-simple>.freeze, [">= 0"])
-      s.add_development_dependency(%q<bundler>.freeze, [">= 1.17"])
-      s.add_development_dependency(%q<flexmock>.freeze, ["~> 0.8.11"])
+      s.add_development_dependency(%q<bundler>.freeze, ["= 2.3.14"])
+      s.add_development_dependency(%q<flexmock>.freeze, [">= 2.4"])
       s.add_development_dependency(%q<jeweler>.freeze, [">= 0"])
       s.add_development_dependency(%q<rake>.freeze, [">= 0"])
       s.add_development_dependency(%q<shoulda-context>.freeze, [">= 0"])
@@ -74,11 +75,11 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<timecop>.freeze, [">= 0"])
     else
       s.add_dependency(%q<builder>.freeze, [">= 0"])
-      s.add_dependency(%q<mail>.freeze, ["> 2.2.5"])
+      s.add_dependency(%q<mail>.freeze, [">= 2.8.0"])
       s.add_dependency(%q<mime-types>.freeze, [">= 0"])
       s.add_dependency(%q<xml-simple>.freeze, [">= 0"])
       s.add_dependency(%q<bundler>.freeze, [">= 1.17"])
-      s.add_dependency(%q<flexmock>.freeze, ["~> 0.8.11"])
+      s.add_dependency(%q<flexmock>.freeze, [">= 2.4"])
       s.add_dependency(%q<jeweler>.freeze, [">= 0"])
       s.add_dependency(%q<rake>.freeze, [">= 0"])
       s.add_dependency(%q<shoulda-context>.freeze, [">= 0"])
@@ -87,11 +88,11 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<builder>.freeze, [">= 0"])
-    s.add_dependency(%q<mail>.freeze, ["> 2.2.5"])
+    s.add_dependency(%q<mail>.freeze, [">= 2.8.0"])
     s.add_dependency(%q<mime-types>.freeze, [">= 0"])
     s.add_dependency(%q<xml-simple>.freeze, [">= 0"])
     s.add_dependency(%q<bundler>.freeze, [">= 1.17"])
-    s.add_dependency(%q<flexmock>.freeze, ["~> 0.8.11"])
+    s.add_dependency(%q<flexmock>.freeze, [">= 2.4"])
     s.add_dependency(%q<jeweler>.freeze, [">= 0"])
     s.add_dependency(%q<rake>.freeze, [">= 0"])
     s.add_dependency(%q<shoulda-context>.freeze, [">= 0"])

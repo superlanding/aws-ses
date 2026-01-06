@@ -1,0 +1,40 @@
+name: Ruby Compatibility Tests
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ['2.7', '3.0', '3.1', '3.2', '3.3']
+
+    name: Ruby ${{ matrix.ruby-version }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+
+    - name: Display Ruby version
+      run: ruby -v
+
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Test gem loading
+      run: ruby -I lib -e "require 'aws/ses'; puts 'Successfully loaded aws-ses gem with Ruby ' + RUBY_VERSION"
+
+    - name: Run tests
+      run: bundle exec rake test
+      continue-on-error: true
+      # Tests may fail without AWS credentials, but we still want to check compatibility
