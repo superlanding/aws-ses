@@ -16,6 +16,9 @@ jobs:
 
     name: Ruby ${{ matrix.ruby-version }}
 
+    env:
+      BUNDLE_GEMFILE: gemfiles/Gemfile.ruby-${{ matrix.ruby-version }}
+
     steps:
     - uses: actions/checkout@v4
 
@@ -25,22 +28,17 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
         cache-version: ${{ matrix.ruby-version }}
-        gemfile: gemfiles/Gemfile.ruby-${{ matrix.ruby-version }}
 
     - name: Display Ruby version
       run: ruby -v
 
     - name: Install dependencies
       run: bundle install
-      env:
-        BUNDLE_GEMFILE: gemfiles/Gemfile.ruby-${{ matrix.ruby-version }}
 
     - name: Test gem loading
       run: ruby -I lib -e "require 'aws/ses'; puts 'Successfully loaded aws-ses gem with Ruby ' + RUBY_VERSION"
 
     - name: Run tests
       run: bundle exec rake test
-      env:
-        BUNDLE_GEMFILE: gemfiles/Gemfile.ruby-${{ matrix.ruby-version }}
       continue-on-error: true
       # Tests may fail without AWS credentials, but we still want to check compatibility
